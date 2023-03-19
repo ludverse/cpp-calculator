@@ -127,8 +127,8 @@ int main()
 	string validOperators[4] = { "+", "-", "*", "/" };
 	bool commentMode = false;
 
-    cout <<      "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may occationally see \"F\":s sometimes lol." << endl;
-    cout << "\033[F\r                                                                                                                                 " << endl;
+    cout <<      "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may see \"F\" sometimes lol." << endl;
+    cout << "\033[F\r                                                                                                                  " << endl;
     // warning for terminals that dont support moving the cursor up a line. if term supports it directly replaces the warning afterwards.
 
 
