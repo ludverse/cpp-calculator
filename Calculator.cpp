@@ -37,7 +37,7 @@ string trimStr(string in)
 	return out;
 }
 
-// chatgpt wrote this MurmurHash3 hash func
+// hashes int with MurmurHash3 hash func
 uint32_t hashCode(int32_t num, size_t len, uint32_t seed = 0) {
 	std::string str = std::string(reinterpret_cast<char*>(&num), sizeof(num));
 
@@ -122,12 +122,16 @@ float parseToNumber(string str)
 
 int main()
 {
-	float lastResult = 0;
+	float lastResult;
+    bool lastResultExists = false;
 	string validOperators[4] = { "+", "-", "*", "/" };
 	bool commentMode = false;
 
-    cout <<          "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may also see \" [F\" sometimes." << endl;
-    cout << "\033[F\r                                                                                                                         " << endl;
+    cout <<      "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may also see \" [F\" sometimes." << endl;
+    cout << "\033[F\r                                                                                                                     " << endl;
+    // warning for terminals that dont support moving the cursor up a line. if term supports it directly replaces the warning afterwards.
+
+
     cout << "  C++ CALCULATOR ft. comments lol" << endl;
     cout << "  Enter a numeric expression below: " << endl;
     cout << endl;
@@ -211,7 +215,7 @@ int main()
 		}
 
 		bool secondNumberExists = false;
-		float numbers[3];
+		float numbers[2];
 		int operatorFindIndex = trin.find(findOperator);
 
 		try
@@ -232,8 +236,17 @@ int main()
 		{
 			string errMsg = err.what();
 
-			if (secondNumberExists) {
-				numbers[0] = lastResult;
+			if (secondNumberExists)
+            {
+                if (lastResultExists)
+                {
+				    numbers[0] = lastResult;
+                }
+                else
+                {
+					cout << "\033[F\r! " << trin << " [ERR: NO HISTORY]" << endl;
+				    continue;
+                }
 			}
 			else
 			{
@@ -255,6 +268,8 @@ int main()
 		if (findOperator == "")
 		{
 			lastResult = numbers[0];
+            lastResultExists = true;
+
 			cout << "\033[F\r  " << numbers[0] << " = " << numbers[0] << endl;
 
 			continue;
@@ -277,6 +292,7 @@ int main()
 		}
 
 		lastResult = out;
+        lastResultExists = true;
 
 		cout << "\033[F\r  " << numbers[0] << " " << findOperator << " " << numbers[1] << " = " << out << endl;
 	}
