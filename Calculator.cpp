@@ -127,8 +127,8 @@ int main()
 	string validOperators[4] = { "+", "-", "*", "/" };
 	bool commentMode = false;
 
-    cout <<      "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may also see \" [F\" sometimes." << endl;
-    cout << "\033[F\r                                                                                                                     " << endl;
+    cout <<      "  -- WARNING -- Your terminal doesn't support replacing previous lines with \\033[F, you may occationally see \"F\":s sometimes lol." << endl;
+    cout << "\033[F\r                                                                                                                                 " << endl;
     // warning for terminals that dont support moving the cursor up a line. if term supports it directly replaces the warning afterwards.
 
 
@@ -145,13 +145,11 @@ int main()
 		else
 		{
 			cout << "> ";
-		}
+        }
+		    
 		string rawin;
 		getline(cin, rawin);
 		string trin = toLowercase(trimStr(rawin));
-
-
-		string findOperator = "";
 
 		if (commentMode)
 		{
@@ -180,12 +178,14 @@ int main()
 			cout << "\033[F\r  " << trin << " -- sucess" << endl;
 			return 0;
 		}
-		else if (trin == "")
+
+		if (trin == "")
 		{
 			cout << "\033[F\r  " << endl;
 			continue;
 		}
-		else if (trin.substr(0, 2) == "//")
+
+		if (trin.substr(0, 2) == "//")
 		{
 			string comment = trimStr(trin.substr(2, trin.length()));
 			commentMode = true;
@@ -207,6 +207,8 @@ int main()
 			cout << "\033[F\r/ " << comment << fillSpaces  << endl;
 			continue;
 		}
+
+		string findOperator = "";
 
 		for (size_t i = 0; i < sizeof(validOperators) / sizeof(*validOperators); i++)
 		{
@@ -253,12 +255,10 @@ int main()
 				if (errMsg == "stof argument out of range")
 				{
 					cout << "\033[F\r! " << trin << " [ERR: OUT OF RANGE]" << endl;
-				}
-				else
-				{
-					cout << "\033[F\r! " << trin << " [ERR]" << endl;
+				    continue;
 				}
 
+                cout << "\033[F\r! " << trin << " [ERR]" << endl;
 				continue;
 			}
 		}
@@ -274,7 +274,8 @@ int main()
 
 			continue;
 		}
-		else if (findOperator == "+")
+		
+        if (findOperator == "+")
 		{
 			out = numbers[0] + numbers[1];
 		}
